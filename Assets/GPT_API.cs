@@ -49,42 +49,10 @@ public class GPT_API : MonoBehaviour
                     Debug.LogError(": HTTP Error: " + webRequest.error);
                     break;
                 case UnityWebRequest.Result.Success:
-                    var response = JsonConvert.DeserializeObject<NLPResponse>(webRequest.downloadHandler.text, new JsonSerializerSettings
-                    {
-                        Error = (obj, err) => Debug.LogError(err + " " + webRequest.downloadHandler.text)
-                    });
-                    callback.Invoke(response.choices[0].text);
+                    callback.Invoke(webRequest.downloadHandler.text);
                     break;
             }
         }
     }
-
-
-    // https://json2csharp.com
-    public class Choice
-    {
-        public string finish_reason { get; set; }
-        public int index { get; set; }
-        public object logprobs { get; set; }
-        public string text { get; set; }
-    }
-
-    public class NLPResponse
-    {
-        public List<Choice> choices { get; set; }
-        public int created { get; set; }
-        public string id { get; set; }
-        public string model { get; set; }
-        public string @object { get; set; }
-        public Usage usage { get; set; }
-    }
-
-    public class Usage
-    {
-        public int completion_tokens { get; set; }
-        public int prompt_tokens { get; set; }
-        public int total_tokens { get; set; }
-    }
-
 
 }
